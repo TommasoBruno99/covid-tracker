@@ -1,0 +1,55 @@
+.card {
+    width: 30%;
+    height: 15em;
+    border: 2px solid black;
+    background: #fff;
+    border-radius: 20px;
+    position: relative;
+}
+
+@media screen and (max-width: 599px) {
+    .card {
+        width: 100%;
+        margin-bottom: 1em;
+    }
+}
+
+.card-info {
+    padding: 2em;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.card-info .date,
+.card-info .info {
+    color: rgb(163, 161, 161);
+    font-size: 1.3rem;
+}
+
+.bottom-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1em;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.active {
+    background: rgb(219, 72, 72);
+}
+
+.death {
+    background: rgb(41, 39, 39);
+}
+
+.recovered {
+    background: rgb(43, 139, 43);
+}
