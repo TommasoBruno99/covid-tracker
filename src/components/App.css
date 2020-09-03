@@ -19,6 +19,9 @@
 }
 
 @media screen and (max-width: 599px) {
+    .main-div {
+        width: 90%;
+    }
     .card-wrapper {
         flex-direction: column;
     }
