@@ -1,53 +1,52 @@
-export const FETCH_TOTALS = 'FETCH_TOTALS';
-export const FETCH_DAILY = 'FETCH_DAILY';
-export const FETCH_COUNTRIES = 'FETCH_COUNTRIES';
-export const FETCH_COUNTRY = 'FETCH_COUNTRY';
+export const GET_COUNTRIES = 'GET_COUNTRIES';
+export const GET_TOTALS = 'GET_TOTALS';
+export const GET_DAILY = 'GET_DAILY';
 
-export interface ISingleDay {
+// Partials of state
+export interface ICountry {
+    name: string;
+}
+
+export interface ITotals {
     confirmed: number;
     deaths: number;
+    recovered: number;
+    lastUpdate: Date | undefined;
+}
+
+export interface IDay {
+    deaths: {
+        total: number;
+    };
+    confirmed: {
+        total: number;
+    };
     reportDate: Date;
 }
 
-export interface ISingleCountry {
-    confirmed: number;
-    deaths: number;
-    recovered: number;
-}
+// Actions
 
-export interface ITotal {
-    recovered: number;
-    infected: number;
-    deaths: number;
-    lastUpdate: Date | undefined;
-    daily: ISingleDay[];
-    countries: string[];
-    singleCountry: ISingleCountry;
+export interface IFetchCountries {
+    type: typeof GET_COUNTRIES;
+    payload: ICountry[];
 }
 
 export interface IFetchTotals {
-    type: typeof FETCH_TOTALS;
-    infected: number;
-    recovered: number;
-    deaths: number;
-    lastUpdate: Date;
+    type: typeof GET_TOTALS;
+    payload: ITotals;
 }
 
 export interface IFetchDaily {
-    type: typeof FETCH_DAILY;
-    payload: ISingleDay[];
+    type: typeof GET_DAILY;
+    payload: IDay[];
 }
 
-export interface IFetchCountries {
-    type: typeof FETCH_COUNTRIES,
-    payload: string[];
+// State
+export interface IState {
+    countries: ICountry[];
+    totals: ITotals;
+    daily: IDay[];
+    isBar: boolean;
 }
 
-export interface IFetchCountry {
-    type: typeof FETCH_COUNTRY;
-    payload: ISingleCountry;
-}
-
-
-
-export type totalsType = IFetchTotals | IFetchDaily | IFetchCountries | IFetchCountry;
+export type dataActions = IFetchCountries | IFetchTotals | IFetchDaily;

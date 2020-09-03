@@ -1,7 +1,24 @@
-import { IFetchCountries, IFetchTotals, FETCH_TOTALS, IFetchDaily, FETCH_DAILY, ISingleDay, FETCH_COUNTRIES, IFetchCountry, FETCH_COUNTRY } from "./action.types";
 import { Dispatch } from "react";
+import { IFetchTotals, IFetchCountries, GET_COUNTRIES, ICountry, GET_TOTALS, IFetchDaily, GET_DAILY, IDay } from './action.types';
 
-interface IFetchTotalResp {
+interface ICountriesJsonResp {
+    countries: ICountry[]
+}
+
+export const fetchCountries = () => async (dispatch: Dispatch<IFetchCountries>) => {
+    try {
+        const countryJSON: ICountriesJsonResp = await (await fetch('https://covid19.mathdro.id/api/countries')).json();
+
+        dispatch({
+            type: GET_COUNTRIES,
+            payload: countryJSON.countries.map((country: ICountry) => country)
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+interface ITotalsJsonResp {
     confirmed: {
         value: number;
     },
@@ -14,93 +31,43 @@ interface IFetchTotalResp {
     lastUpdate: Date;
 }
 
-export const fetchTotals = (country: string) => (dispatch: Dispatch<IFetchTotals>) => {
+export const fetchTotals = (country: string) => async (dispatch: Dispatch<IFetchTotals>) => {
 
-    let url = 'https://covid19.mathdro.id/api/';
-    if (country !== 'Global') url = `https://covid19.mathdro.id/api/countries/${country}`;
+    try {
+        let url = 'https://covid19.mathdro.id/api/';
+        let totalsJSON: ITotalsJsonResp;
+        if (country === 'Global') {
+            totalsJSON = await (await fetch(url)).json();
+        } else {
+            totalsJSON = await (await fetch(url + `countries/${country}`)).json();
+        }
 
-    fetch(url)
-        .then(res => res.json())
-        .then((result: IFetchTotalResp) => {
 
-
-            dispatch({
-                type: FETCH_TOTALS,
-                infected: result.confirmed.value,
-                deaths: result.deaths.value,
-                recovered: result.recovered.value,
-                lastUpdate: result.lastUpdate
-            })
-        })
-        .catch(e => console.log(e.message));
-}
-
-interface IFetchDailyResp {
-    deaths: {
-        total: number;
-    },
-    confirmed: {
-        total: number;
+        dispatch({
+            type: GET_TOTALS,
+            payload: {
+                confirmed: totalsJSON.confirmed.value,
+                deaths: totalsJSON.deaths.value,
+                recovered: totalsJSON.recovered.value,
+                lastUpdate: totalsJSON.lastUpdate
+            }
+        });
+    } catch (e) {
+        console.log(e);
     }
 }
 
-export const fetchDaily = () => (dispatch: Dispatch<IFetchDaily>) => {
 
-    fetch('https://covid19.mathdro.id/api/daily')
-        .then(res => res.json())
-        .then(result => {
+export const fetchDaily = () => async (dispatch: Dispatch<IFetchDaily>) => {
 
+    try {
+        const dailyJSON: IDay[] = await (await fetch('https://covid19.mathdro.id/api/daily')).json();
 
-            const payload: ISingleDay[] = result.map((res: IFetchDailyResp) => ({
-                deaths: res.deaths.total,
-                confirmed: res.confirmed.total
-            }));
-            dispatch({
-                type: FETCH_DAILY,
-                payload: payload
-            });
-
-        })
-        .catch(e => console.log(e));
-}
-
-interface IFetchCountriesResp {
-    name: string;
-
-}
-
-export const fetchCountries = () => (dispatch: Dispatch<IFetchCountries>) => {
-    fetch('https://covid19.mathdro.id/api/countries')
-        .then(res => res.json())
-        .then(result => {
-
-
-            const payload: string[] = result.countries.map((res: IFetchCountriesResp) => res.name);
-
-            dispatch({
-                type: FETCH_COUNTRIES,
-                payload: payload
-            });
-        })
-        .catch(e => console.log(e));
-}
-
-
-export const fetchSingleCountry = (country: string) => (dispatch: Dispatch<IFetchCountry>) => {
-
-    fetch(`https://covid19.mathdro.id/api/countries/${country}`)
-        .then(res => res.json())
-        .then(result => {
-            const payload = {
-                confirmed: result.confirmed.value,
-                recovered: result.recovered.value,
-                deaths: result.recovered.value
-            }
-
-            dispatch({
-                type: FETCH_COUNTRY,
-                payload: payload
-            });
-        })
-        .catch(e => console.log(e));
+        dispatch({
+            type: GET_DAILY,
+            payload: dailyJSON
+        });
+    } catch (e) {
+        console.log(e);
+    }
 }

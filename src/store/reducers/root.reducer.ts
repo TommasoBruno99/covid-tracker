@@ -3,7 +3,7 @@ import dataReducer from './data.reducer';
 
 
 const rootReducer = combineReducers({
-    totals: dataReducer
+    dataReducer
 });
 
 export default rootReducer;

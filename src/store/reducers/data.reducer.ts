@@ -1,51 +1,35 @@
-import { ITotal, totalsType, FETCH_TOTALS, FETCH_DAILY, FETCH_COUNTRIES, FETCH_COUNTRY } from "../actions/action.types";
+import { IState, dataActions, GET_COUNTRIES, GET_TOTALS, GET_DAILY } from '../actions/action.types';
 
-const initialState: ITotal = {
-    lastUpdate: undefined,
-    recovered: 0,
-    deaths: 0,
-    infected: 0,
-    daily: [],
+const initialState: IState = {
     countries: [],
-    singleCountry: {
-        deaths: 0,
+    totals: {
         recovered: 0,
-        confirmed: 0
-    }
+        confirmed: 0,
+        deaths: 0,
+        lastUpdate: undefined,
+    },
+    daily: [],
+    isBar: false
 }
 
-const dataReducer = (state = initialState, action: totalsType): ITotal => {
+const dataReducer = (state = initialState, action: dataActions): IState => {
 
     switch (action.type) {
 
-        case FETCH_TOTALS:
+        case GET_COUNTRIES:
             return {
                 ...state,
-                recovered: action.recovered,
-                deaths: action.deaths,
-                infected: action.infected,
-                lastUpdate: action.lastUpdate,
-                singleCountry: { deaths: 0, recovered: 0, confirmed: 0 }
+                countries: action.payload
             }
-
-        case FETCH_DAILY:
+        case GET_TOTALS:
             return {
                 ...state,
-                daily: action.payload,
-                singleCountry: { deaths: 0, recovered: 0, confirmed: 0 }
+                totals: action.payload
             }
-
-        case FETCH_COUNTRIES:
+        case GET_DAILY:
             return {
                 ...state,
-                countries: action.payload,
-                singleCountry: { deaths: 0, recovered: 0, confirmed: 0 }
-            }
-
-        case FETCH_COUNTRY:
-            return {
-                ...state,
-                singleCountry: action.payload
+                daily: action.payload
             }
         default: return state;
     }

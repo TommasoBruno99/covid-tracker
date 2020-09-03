@@ -1,32 +1,32 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import './Cards.css';
+
 import Card from './Card/Card';
 import { AppState } from '../../store/store';
-import { fetchDaily } from '../../store/actions/data.action';
-
-import './Cards.css';
+import { fetchTotals } from '../../store/actions/data.action';
+import { ITotals } from '../../store/actions/action.types';
 
 const Cards: React.FC = (): JSX.Element => {
 
-    const confirmed = useSelector((state: AppState) => state.totals.infected);
-    const deaths = useSelector((state: AppState) => state.totals.deaths);
-    const recovered = useSelector((state: AppState) => state.totals.recovered);
-    const date = useSelector((state: AppState) => state.totals.lastUpdate);
-
-
+    const totals: ITotals = useSelector((state: AppState) => state.dataReducer.totals);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchDaily());
+        const fetchTotalsAPI = async () => {
+            dispatch(await fetchTotals('Global'));
+        }
+
+        fetchTotalsAPI();
     }, [dispatch]);
 
 
     return (
         <div className="card-wrapper">
-            <Card number={confirmed} date={date} info={'Infected'} bottomBar={'active'} description={'Number of people infected by COVID19'} />
-            <Card number={deaths} date={date} info={'Deaths'} bottomBar={'death'} description={'Number of people who died by COVID19'} />
-            <Card number={recovered} date={date} info={'Recovered'} bottomBar={'recovered'} description={'Number of recoveries from COVID19'} />
+            <Card number={totals.confirmed} date={totals.lastUpdate} info={'Infected'} bottomBar={'active'} description={'Number of people infected by COVID19'} />
+            <Card number={totals.deaths} date={totals.lastUpdate} info={'Deaths'} bottomBar={'death'} description={'Number of people who died by COVID19'} />
+            <Card number={totals.recovered} date={totals.lastUpdate} info={'Recovered'} bottomBar={'recovered'} description={'Number of recoveries from COVID19'} />
         </div>
     )
 }
