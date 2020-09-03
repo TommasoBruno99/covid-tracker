@@ -3,6 +3,7 @@
 ## Covid19 tracker web application built in react and typescript using the state management redux and an external api.
 
 <img width="100%" src="./images/main.png" />
+<img width="100%" src="./images/secondary.png" />
 
 ### Languages and Tools:
 
