@@ -10,4 +10,11 @@
 body {
     background: rgb(240, 238, 238);
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    overflow: hidden;
+}
+
+@media screen and (max-width:599px) {
+    body {
+        overflow: scroll;
+    }
 }
