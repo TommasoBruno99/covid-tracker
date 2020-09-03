@@ -18,13 +18,6 @@
     flex-direction: column;
 }
 
-.card-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1em;
-}
-
 @media screen and (max-width: 599px) {
     .card-wrapper {
         flex-direction: column;

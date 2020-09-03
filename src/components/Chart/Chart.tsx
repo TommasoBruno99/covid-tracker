@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import { ISingleDay } from '../../store/actions/action.types';
+import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '../../store/store';
+import { fetchTotals } from '../../store/actions/data.action';
 
-interface IChartProps {
-    daily: ISingleDay[];
-}
+const Chart: React.FC = (): JSX.Element => {
 
-const Chart: React.FC<IChartProps> = ({ daily }): JSX.Element => {
+    const daily = useSelector((state: AppState) => state.totals.daily);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchTotals());
+    }, [dispatch]);
 
     return (
         <Line
