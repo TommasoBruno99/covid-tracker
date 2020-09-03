@@ -2,3 +2,9 @@
     width: 20%;
     margin: auto;
 }
+
+@media screen and (max-width: 599px) {
+    .selection {
+        width: 100%;
+    }
+}
