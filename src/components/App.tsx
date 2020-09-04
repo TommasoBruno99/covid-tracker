@@ -45,7 +45,7 @@ const App: React.FC = (): JSX.Element => {
 
     return (
         <div className="main-div">
-            <h1 className="title"> COVID19 TRACKER </h1>
+            <h1 className="title"> COVID19 TRACKER By Tommaso Bruno</h1>
             <div className="wrapper">
                 <Cards />
                 <CountrySelector countries={countries} onChange={handleChangeCountry} />
